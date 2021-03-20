@@ -4,14 +4,12 @@
 
 #include "board.h"
 #include "move.h"
+#include "engine.h"
 
 
+struct UciOption {
 
-enum EOptionType { STRING, SPIN, COMBO, CHECK, BUTTON };
-
-class UciOption {
-
-public:
+	enum EOptionType { STRING, SPIN, COMBO, CHECK, BUTTON };
 
 	// Constructors
 	UciOption() : _defValue(""), _value(""), _optionType(EOptionType::STRING), _min(0), _max(0)
@@ -30,7 +28,8 @@ public:
 		_defValue(defaultValue),
 		_value(defaultValue),
 		_optionType(type),
-		_min(min), _max(max)
+		_min(min),
+		_max(max)
 	{
 	};
 
@@ -72,7 +71,7 @@ public:
 	{
 		return _optionType;
 	}
-	const std::string& getTypeString() const
+	const std::string getTypeString() const
 	{
 		std::string res = "";
 		switch (_optionType)
@@ -127,23 +126,22 @@ enum EUciCommand {
 };
 typedef std::map<std::string, EUciCommand > UciCommandMap;
 
-enum EGoSubCommand { WTIME, BTIME, WINC, BINC, MOVESTOGO, DEPTH, NODES, MATE, MOVETIME, INFINITE };
+enum EGoSubCommand { SEARCHMOVES, PONDER, WTIME, BTIME, WINC, BINC, MOVESTOGO, DEPTH, NODES, MATE, MOVETIME, INFINITE };
 typedef std::map<std::string, EGoSubCommand > GoSubCommandMap;
 
 class Uci
 {
 public:
 
-	Uci() : _wtime(10000), _btime(10000), _winc(0), _binc(0), _movestogo(0), _depth(1),
-		_pBoard(std::shared_ptr<Board>(new Board())),
-		//_searchManager(SearchManager(_pBoard)),
-		_optionsMap(), 
-		_uciCommands(), 
+	Uci() : _board(std::shared_ptr<Board>(new Board())),
+		_engine(std::shared_ptr<engine::Engine>(new engine::Engine(_board))),
+		_optionsMap(),
+		_uciCommands(),
 		_goSubCommands()
 	{
 
-		_optionsMap["debug"] = UciOption("on", EOptionType::STRING); 
-		_optionsMap["hash"] = UciOption("256", EOptionType::SPIN, 1, 2048);
+		_optionsMap["debug"] = UciOption("on", UciOption::EOptionType::STRING);
+		_optionsMap["hash"] = UciOption("256", UciOption::EOptionType::SPIN, 1, 2048);
 
 		//uci commands		
 		_uciCommands["uci"] = UCI;
@@ -158,6 +156,8 @@ public:
 		_uciCommands["quit"] = QUIT;
 
 		//uci go sub commands
+		_goSubCommands["searchmoves"] = EGoSubCommand::SEARCHMOVES;
+		_goSubCommands["ponder"] = EGoSubCommand::PONDER;
 		_goSubCommands["wtime"] = EGoSubCommand::WTIME;
 		_goSubCommands["btime"] = EGoSubCommand::BTIME;
 		_goSubCommands["winc"] = EGoSubCommand::WINC;
@@ -168,18 +168,17 @@ public:
 		_goSubCommands["mate"] = EGoSubCommand::MATE;
 		_goSubCommands["movetime"] = EGoSubCommand::MOVETIME;
 		_goSubCommands["infinite"] = EGoSubCommand::INFINITE;
+
 	}
 
 	void listen();
 	void init();
-	void setoption(std::istringstream& is);
 	void printOptions() const;
 	void newGame();
-	void resetGoOptions();
-	std::string getOption(const std::string str) const;
 
-	// get methods    
-	//inline Search getUciSearch() const { return _search; }
+	std::string getOption(const std::string str) const;
+	void setOption(std::istringstream& is);
+
 	EUciCommand getUciCommand(std::string command) {
 		auto it = _uciCommands.find(command);
 		if (it != _uciCommands.end()) {
@@ -197,25 +196,15 @@ public:
 
 private:
 
-	unsigned int _wtime;
-	unsigned int _btime;
-	unsigned int _winc;
-	unsigned int _binc;
-	unsigned int _movestogo;
-	unsigned int _depth;
-	unsigned int _nodes;
-	unsigned int _mate;
-	unsigned int _movetime;
-	bool _infinite;
-
-	std::shared_ptr<Board> _pBoard;
-	//SearchManager _searchManager;
-	std::thread myThread;
+	std::shared_ptr <engine::EngineOption> _engineOptions;
+	std::shared_ptr<Board> _board;
+	std::shared_ptr<engine::Engine> _engine;
+	
 
 
 	void setupPosition(std::istringstream& is);
-	
-	void go();
+
+	void go(std::istringstream& is);
 
 	OptionsMap _optionsMap;
 	UciCommandMap _uciCommands;
