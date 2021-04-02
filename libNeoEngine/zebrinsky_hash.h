@@ -4,16 +4,22 @@
 #include <bitset>
 #include <random>
 
+#include "types.h"
+
+typedef uint64_t ZKey ;
+
 namespace ZHash
 {
-	typedef uint64_t ZKey ;
+	
 	//random generator
 	extern std::mt19937_64 rdGen;
 
-	extern ZKey psq[ 2/*sides*/][7/*piece types*/][64/*squares*/];
-	extern ZKey enPassant[8/*files*/];
-	extern ZKey castling[4/*cases*/];
-	extern ZKey side;
+	extern ZKey piecesKeys[2/*sides*/][PIECE_TYPE_NB][SQUARE_NB];
+	extern ZKey epKeys[8/*files*/];
+	extern ZKey castleKeys[2/*sides*/][4/*cases: KS , QS , BOTH , NO CASTLE*/];
+	extern ZKey sideKey;
 
-	void initZobristKeys();
+	
+
+	void init();
 }
