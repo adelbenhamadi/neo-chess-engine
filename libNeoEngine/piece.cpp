@@ -1,20 +1,30 @@
 #include "piece.h"
+#include "zebrinsky_hash.h"
 
+namespace piece {
 
- const  std::map<char, EPieceCode> Piece::_piecesCodesMap = {
-    //white pieces
-    {'K', EPieceCode::W_KING } ,
-    {'Q', EPieceCode::W_KING } ,
-    {'R', EPieceCode::W_KING } ,
-    {'N', EPieceCode::W_KING } ,
-    {'B', EPieceCode::W_KING } ,
-    {'P', EPieceCode::W_KING } ,
-    //black pieces
-    {'k', EPieceCode::W_KING } ,
-    {'q', EPieceCode::W_KING } ,
-    {'r', EPieceCode::W_KING } ,
-    {'n', EPieceCode::W_KING } ,
-    {'b', EPieceCode::W_KING } ,
-    {'p', EPieceCode::W_KING }
+    const  std::map<char, EPiece> piecesCodesMap = {
+        //white pieces
+        {'P', EPiece::W_PAWN } ,
+        {'B', EPiece::W_BISHOP } ,
+        {'R', EPiece::W_ROOK } ,
+        {'N', EPiece::W_KNIGHT } ,
+        {'Q', EPiece::W_QUEEN } ,
+        {'K', EPiece::W_KING } ,
+        //black pieces
+        {'p', EPiece::B_PAWN},
+        {'b', EPiece::B_BISHOP } ,
+        {'r', EPiece::B_ROOK } ,
+        {'n', EPiece::B_KNIGHT } ,
+        {'q', EPiece::B_QUEEN } ,
+        {'k', EPiece::B_KING } ,
 
+        {'-', EPiece::NO_PIECE}
+
+    };
+    ZKey hashKeys[ PIECE_TYPE_NB][ SQUARE_NB];
+    ZKey epHashKeys[SQUARE_NB];
+   
 };
+
+
