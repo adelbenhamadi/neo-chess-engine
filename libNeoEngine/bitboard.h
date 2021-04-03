@@ -6,7 +6,7 @@
 #include <math.h>
 #include <sstream>
 #include <chrono>
-
+#include <assert.h>
 
 #include "types.h"
 #include "tables.h"
@@ -22,9 +22,7 @@
 
 namespace bitboard {
 
-#define set_bit(bitboard, square) ((bitboard) |= (1ULL << (square)))
-#define get_bit(bitboard, square) ((bitboard) & (1ULL << (square)))
-#define pop_bit(bitboard, square) ((bitboard) &= ~(1ULL << (square)))
+
 
 	inline bool moreThanOne(Bitboard i)
 	{
@@ -86,9 +84,9 @@ namespace bitboard {
 		return (Square)idx;
 
 	}
-// Assembly code by Heinz van Saanen
+	// Assembly code by Heinz van Saanen
 
-	inline Square lsb(Bitboard i) { 
+	inline Square lsb(Bitboard i) {
 #ifdef _MSC_VER
 		unsigned long idx;
 		_BitScanForward64(&idx, i);
@@ -108,28 +106,41 @@ namespace bitboard {
 		return s;
 	}
 	inline void setBit(Bitboard& i, Square sq) {
-		i |= (1ULL << sq );
+		i |= (1ULL << sq);
 	}
 	inline void unsetBit(Bitboard& i, Square sq) {
 		i &= ~(1ULL << sq);
 	}
 	inline bool isBitSet(const Bitboard i, Square sq) {
+		assert(square::is_ok(sq));
 		return i & (1ULL << (sq));
 	}
 	inline bool isBitSet(const Bitboard i, const unsigned int file, const unsigned int rank)
 	{
-		unsigned int sq = file + 8 * rank ;
-		return i & (1ULL << sq);
-		//return (0 | 1ULL << sq) & i;
-	}
-
-	inline bool areAligned(const Square s1, const Square s2, const Square s3) {
-		return false;
-		//return Tables::LINE_BB[s1][s2] & Tables::SquareBB[s3];
+		Square sq = square::make_square((File)file, (Rank)rank);
+		return isBitSet(i, sq);
 	}
 
 	extern Bitboard SquareBB[SQUARE_NB];
 	extern Bitboard LineBB[SQUARE_NB][SQUARE_NB];
+
+	/// line_bb() returns a bitboard representing an entire line (from board edge
+	/// to board edge) that intersects the two given squares. If the given squares
+	/// are not on a same file/rank/diagonal, the function returns 0. For instance,
+	/// line_bb(SQ_C4, SQ_F7) will return a bitboard with the A2-G8 diagonal.
+	inline Bitboard line_bb(Square s1, Square s2) {
+		assert(square::is_ok(s1) && square::is_ok(s2));
+		return LineBB[s1][s2];
+	}
+
+	/// aligned() returns true if the squares s1, s2 and s3 are aligned either on a
+	inline bool aligned(Square s1, Square s2, Square s3) {
+		return line_bb(s1, s2) & SquareBB[s3];
+		//	return LineBB[s1][s2] & SquareBB[s3];
+	}
+
+
+
 
 	void setup();
 
@@ -157,5 +168,5 @@ namespace bitboard {
 	inline Bitboard& operator^=(Bitboard& b, Square s) {
 		return b ^= SquareBB[s];
 	}
-	
+
 }
