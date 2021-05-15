@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+#include "types.h"
+
 namespace engine {
 
 	class EngineOption {
@@ -27,6 +29,10 @@ namespace engine {
 		bool isSetDepth()const { return depth > 0; }
 		bool isSetMovetogo()const { return movestogo > 0; }
 		bool isSetSearchmoves()const { return movestogo > 0; }
+
+		
+		unsigned int getAllocatedTime(Side side, unsigned int divider = 50);
+
 	};
 
 
