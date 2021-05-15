@@ -87,17 +87,28 @@ namespace engine {
 	};
 
 	/*Engine
-	* This is the main component of this project, it is responsible of what a chess engine meant to do:
-	processing all legal moves for both player for a certain fixed depth or in a limited time interval
+	*
+	Responsible of what a chess engine meant to do:
+	processing all legal moves for both player for a certain fixed depth or for a limited time interval
 	*/
-
 	class Engine {
-		//private stuff
-		std::shared_ptr<Board> _bord;
-		std::shared_ptr<EngineOption> _options;
-		ThreadPool _threadPool;
+		
+		EngineOption _options;
+		Board _board;
+		std::unique_ptr<std::deque<BoardState>> _states;
 		unsigned int _ply;
+		Move _best;
+		int _searchDepth;
+		bool _stop = false;
+		Move _curMove;
+#if USE_THREADING
+		ThreadPool _threadPool;
+#else
+		SearchStats _searchStats;
+#endif
+#if USE_TT
 		TTable _tt;
+#endif
 	public:
 		static bool DEBUG_MODE;
 
