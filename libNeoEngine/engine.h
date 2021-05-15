@@ -6,7 +6,12 @@
 #include "thread_pool.h"
 #include "engine_options.h"
 #include "transposition_table.h"
+#include "move_generator.h"
 
+#define USE_THREADING 0
+#define USE_TT 0
+
+using namespace std::chrono;
 
 namespace engine {
 
