@@ -17,6 +17,69 @@ namespace engine {
 
 	constexpr unsigned int MAX_DEPTH = 99;
 
+	struct SearchStats {
+		enum EVerboseMode  { INFO , DEBUG};
+		steady_clock::time_point _startTime;
+		int _processedNodes;
+		long long _searchTime;
+		unsigned _thinkTime;
+		SearchStats() :_searchTime(0), _thinkTime(0) {}
+		inline void start() {
+			_processedNodes = 0;
+			_searchTime = 0;
+			_startTime = steady_clock::now();
+		}
+		inline void incProcessed() {
+			_processedNodes++;
+		}
+		int processed() { return _processedNodes; }
+		long long duration() { return _searchTime; }
+		unsigned nps() {
+			if(_searchTime)
+			 return (1000 * _processedNodes /_searchTime);
+			return 0;
+		}
+		inline void reset() {
+			_searchTime = duration_cast<milliseconds>(steady_clock::now() - _startTime).count();
+			_startTime = steady_clock::now();
+		}
+		inline void setThinkTime(unsigned int t) {
+			_thinkTime = t;
+		}
+		inline unsigned thinkTime() { return _thinkTime; }
+		template<EVerboseMode Mode>
+		inline void verbose(int sc,int depth,Move cur,int curi)
+		{
+			if (Mode == INFO) {
+				std::cout << "\ninfo";
+				if (sc > piece::typeToValue(KING) - MAX_DEPTH) {
+					std::cout << " depth " << depth << " score mate 1";
+				}
+				else {
+					std::cout << " depth " << depth /*- extension*/ << " score cp " << sc;
+				}
+				
+				std::cout << " currmove " << cur.toString();
+				std::cout << " currmovenumber " << curi;
+				std::cout << " nodes " << _processedNodes;
+				std::cout << " nps " << nps();
+				std::cout << " time " << _searchTime;
+				//std::cout << std::endl;
+			}
+			else if (Mode == DEBUG) {
+				std::cout <<  "\ndebug";
+				std::cout << " depth " << depth;
+				std::cout << " score cp " << sc;
+				std::cout << " currmove " << cur.toString();
+				std::cout << " currmovenumber " << curi;
+				std::cout << " nodes " << _processedNodes;
+				std::cout << " nps " << nps();
+				std::cout << " time " << _searchTime;
+			}
+			//	std::cout << " pv "; TODO
+			std::cout << std::endl;
+		}
+	};
 
 	/*Engine
 	* This is the main component of this project, it is responsible of what a chess engine meant to do:
