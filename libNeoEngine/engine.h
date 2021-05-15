@@ -111,8 +111,17 @@ namespace engine {
 #endif
 	public:
 		static bool DEBUG_MODE;
+		Engine();
+#if USE_THREADING
 
-		Engine(std::shared_ptr<Board> board);
+#else
+		int search(const int searchDepth);
+		int searchTime(const unsigned utime);
+		int negaMax(int depth, int alpha, int beta);
+		int negaScout(int depth, int alpha, int beta);
+		int quiescence(int alpha, const int beta);
+		int evaluate();
+#endif
 		/*only search laucher:
 		* Will take care of starting the thread pool search mechanism
 		*/
