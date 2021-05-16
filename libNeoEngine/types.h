@@ -1,6 +1,10 @@
 #pragma once
 #include <cstdint>
 #include <assert.h>
+#include <string>
+
+#include "compat.h"
+#include "config.h"
 
 #ifdef NDEBUG
 #define ASSERT_IF(_d) _d
