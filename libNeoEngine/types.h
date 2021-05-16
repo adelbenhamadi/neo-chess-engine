@@ -11,6 +11,8 @@ constexpr auto _INFINITY = 0xffffff;
 typedef std::uint64_t Bitboard;
 typedef unsigned int Score;
 
+enum GamePhase : unsigned { MG = 0U, EG, PHASE_NB };
+
 enum Side : unsigned int { WHITE = 0U, BLACK = 1U };
 enum EBitboardType : unsigned int
 {
