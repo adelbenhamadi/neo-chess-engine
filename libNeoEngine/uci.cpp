@@ -120,36 +120,38 @@ std::string Uci::getOption(const std::string str) const
 
 void Uci::setupPosition(std::istringstream& is)
 {
-	Move m;
-	std::string token, fen;
+	
+	std::string token, fen = "";
 
 	GET_TOKEN();
-	//creta new board
-	if (token == "startpos")
-	{
-		_board = std::shared_ptr<Board>(new Board());
-	}
-	else if (token == "fen")
+	
+	if (token == "fen")
 	{
 		while (is >> token && token != "moves")
 			fen += token + " ";
-		_board = std::shared_ptr<Board>(new Board(fen));
+		
+		
 	}
-	else
+	else if (token != "startpos")
 	{
 		return;
 	}
 
+	_engine->newBoard(fen);
+
 	while (is >> token)
 	{
+		
 		if (token != "moves")
 		{
-			//execute Move!
-			_engine->doMove(m);
+			if (!_engine->executeMove(token)) {
+				std::cout << " debug illegal move [" << token << "]" << std::endl;
+				std::cout << "illegal move!" << std::endl;
+				break;
 		}
 	}
-	//setup engine
-	//TODO
+	}
+	
 }
 
 void Uci::go(std::istringstream& is)
