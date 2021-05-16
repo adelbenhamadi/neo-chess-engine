@@ -63,6 +63,9 @@ void Uci::listen()
 
 void Uci::init()
 {
+	_engine->reset();
+}
+
 void Uci::clean()
 {
 	
