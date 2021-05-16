@@ -196,8 +196,8 @@ public:
 
 private:
 
-	std::shared_ptr <engine::EngineOption> _engineOptions;
-	std::shared_ptr<Board> _board;
+	
+	
 	std::shared_ptr<engine::Engine> _engine;
 	
 
