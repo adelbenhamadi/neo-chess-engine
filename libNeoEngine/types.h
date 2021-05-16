@@ -196,7 +196,15 @@ enum EPiece : unsigned int
 	NO_PIECE = 14
 
 };
-
+enum EPieceValue : unsigned 
+{
+	V_PAWN = 100,
+	V_KNIGHT = 310,
+	V_BISHOP = 325,
+	V_ROOK = 500,
+	V_QUEEN = 900,
+	V_KING = 10000
+};
 namespace square {
 	constexpr Square make_square(File f, Rank r) {
 		return Square(r * 8 + f);
