@@ -20,6 +20,34 @@ namespace engine {
 		_tt.reset();
 		_threadPool.clearThreads();
 	}
+	Engine::Engine() : _options(),_states(new std::deque<BoardState>(1)) {
+		PESTO::init_tables();
+	}
+
+	void Engine::start() {
+		_stop = false;
+		if (_options.infinite) {
+			search(MAX_DEPTH);
+		}
+		else if (_options.depth > 1) {
+			search(_options.depth);
+		}
+		else {
+			searchTime(_options.getAllocatedTime(_board.side()));
+		}
+
+	}
+
+	void Engine::stop() {
+		_stop = true;
+	}
+
+	void Engine::reset()
+	{
+		stop();
+		_options.reset();
+	}
+
 	//Quiescence Search
 	int Engine::quiescence(int alpha, const int beta)
 	{
