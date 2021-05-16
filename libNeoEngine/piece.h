@@ -15,5 +15,10 @@ namespace piece {
     constexpr EPiece make_piece(EPieceType pt, Side side) {
         return EPiece(pt + 6 * side);
     }
+    constexpr Side side_of(EPiece p){
+        assert(p >= W_PAWN && p <= B_KING);
+        return Side(p / 6);
+    }
+    const unsigned typeToValue(EPieceType pt);;
 }
 
