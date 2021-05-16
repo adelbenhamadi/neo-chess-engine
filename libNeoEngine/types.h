@@ -44,11 +44,11 @@ enum EBitboardType : unsigned int
 struct CastlingRight {
 
 	enum ECastlingRight : unsigned int { 		
-		NO_CASTLE =  0b00,
-		KING_SIDE =  0b01, 
+		NO_CASTLE = 0b00,
+		KING_SIDE = 0b01,
 		QUEEN_SIDE = 0b10, 
-		BOTH_SIDES = 0b11, 
-
+		BOTH_SIDES =KING_SIDE | QUEEN_SIDE,
+		CASTLING_NB = 4
 	};
 
 	//construct CastleRight from fen castle segment
