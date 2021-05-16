@@ -1,4 +1,6 @@
 #include "engine.h"
+#include "evaluator.h"
+#include "pesto.h"
 
 namespace engine {
 	bool Engine::DEBUG_MODE = false;
