@@ -48,6 +48,9 @@ void Uci::listen()
 		case EUciCommand::GO:
 			go(is);
 			break;
+		case EUciCommand::STOP:
+			_engine->stop();
+			break;
 		case EUciCommand::QUIT:
 			_engine->stop();
 			bStop = true;
