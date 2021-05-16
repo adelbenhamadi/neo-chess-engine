@@ -219,4 +219,5 @@ void Uci::go(std::istringstream& is)
 	std::cout << "\nbestmove " << _engine->bestMove().toString() << std::endl;
 }
 
+	_engine->setOptions(opt);
 }

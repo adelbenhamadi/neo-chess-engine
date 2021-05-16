@@ -176,7 +176,7 @@ public:
 	void clean();
 	void printOptions() const;
 	void newGame();
-
+	void test_engine(std::string fen, engine::EngineOption opt);
 	std::string getOption(const std::string str) const;
 	void setOption(std::istringstream& is);
 
