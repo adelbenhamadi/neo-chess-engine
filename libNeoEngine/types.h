@@ -2,6 +2,11 @@
 #include <cstdint>
 #include <assert.h>
 
+#ifdef NDEBUG
+#define ASSERT_IF(_d) _d
+#else
+#define ASSERT_IF(_d) assert(_d)
+#endif
 constexpr auto _INFINITY = 0xffffff;
 typedef std::uint64_t Bitboard;
 typedef unsigned int Score;
