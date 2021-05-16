@@ -122,7 +122,7 @@ private:
 typedef std::map<std::string, UciOption> OptionsMap;
 
 enum EUciCommand {
-	UCI = 0, ISREADY, SETOPTION, COLOR, UCINEWGAME, POSITION, GO, DEBUG, PRINT, PRINTOPTIONS, QUIT = 99, UNKNOWN = 100
+	UCI = 0, ISREADY, SETOPTION, COLOR, UCINEWGAME, POSITION, GO , STOP , DEBUG, PRINT, PRINTOPTIONS, QUIT = 99, UNKNOWN = 100
 };
 typedef std::map<std::string, EUciCommand > UciCommandMap;
 
