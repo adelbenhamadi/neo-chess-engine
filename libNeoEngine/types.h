@@ -99,10 +99,10 @@ struct CastlingRight {
 	//unset a given right from a given side 
 	inline void remove(Side side, unsigned right) {
 		if (side == WHITE) {
-			_white &= right;
+			_white -= _white & right;
 		}
 		else {
-			_black  &= right;
+			_black  -= _black & right;
 		}
 	}
 	//set a given right to a given side 
