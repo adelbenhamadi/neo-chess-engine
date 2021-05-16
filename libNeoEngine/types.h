@@ -205,21 +205,47 @@ enum EPieceValue : unsigned
 	V_QUEEN = 900,
 	V_KING = 10000
 };
+/*
+* Routines below are copied/adapted from stockfish engine (version 13)
+* Copyright:  (C) 2004-2021 The Stockfish developers
+* Under the GNU General Public License, see <http://www.gnu.org/licenses/>
+* Source: types.h
+*/
 namespace square {
+	
 	constexpr Square make_square(File f, Rank r) {
-		return Square(r * 8 + f);
+		return Square(r * 8U + f);
 	}
 
-	constexpr bool is_ok(Square s) {
-		return s >= SQ_A1 && s <= SQ_H8;
+	constexpr bool is_ok(Square sq) {
+		return sq >= SQ_A1 && sq <= SQ_H8;
 	}
 
-	constexpr File file_of(Square s) {
-		return File(s & 7);
+	constexpr File file_of(Square sq) {
+		return File((int)sq & 7);
 	}
 
-	constexpr Rank rank_of(Square s) {
-		return Rank(s >> 3);
+	constexpr Rank rank_of(Square sq) {
+		return Rank(sq >> 3);
+	}
+	constexpr Square relative_square(Side side, Square sq) {
+		return Square((int)sq ^ (side * 56));
 	}
 
+	constexpr Rank relative_rank(Side side, Rank r) {
+		return Rank(r ^ (side * 7));
+	}
+
+	constexpr Rank relative_rank(Side side, Square sq) {
+		return relative_rank(side, rank_of(sq));
+	}
+
+	constexpr int pawn_push_dir(Side side) {
+		return side == WHITE ? 8 : -8;
+	}
+
+
+	inline const std::string square_str(Square sq) {
+		return std::string{ char('a' + square::file_of(sq)), char('1' + square::rank_of(sq)) };
+	}
 }
