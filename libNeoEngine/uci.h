@@ -173,6 +173,7 @@ public:
 
 	void listen();
 	void init();
+	void clean();
 	void printOptions() const;
 	void newGame();
 

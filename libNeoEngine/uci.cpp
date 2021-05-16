@@ -63,6 +63,9 @@ void Uci::listen()
 
 void Uci::init()
 {
+void Uci::clean()
+{
+	
 }
 
 void Uci::setOption(std::istringstream& is)
