@@ -158,7 +158,9 @@ void Uci::go(std::istringstream& is)
 {
 
 	std::string token;
-	_engineOptions->reset();
+	_engine->reset();
+	auto engineOpt = _engine->options();
+
 	//continue listning for needed Go sub commands
 	while (is >> token)
 	{
@@ -166,40 +168,41 @@ void Uci::go(std::istringstream& is)
 		switch (goSubCommand)
 		{
 		case EGoSubCommand::SEARCHMOVES:
-			_engineOptions->searchmoves.clear();
+			
+			engineOpt.searchmoves.clear();
 			while (!is.eof()) {
 				is >> token;
-				_engineOptions->searchmoves.push_back(token);
+				engineOpt.searchmoves.push_back(token);
 			}
 			break;
-		case EGoSubCommand::PONDER: _engineOptions->ponder = true; break;
+		case EGoSubCommand::PONDER: engineOpt.ponder = true; break;
 			//white has x msec left on the clock
-		case EGoSubCommand::WTIME: is >> _engineOptions->wtime; break;
+		case EGoSubCommand::WTIME: is >> engineOpt.wtime; break;
 
 			//black has x msec left on the clock
-		case EGoSubCommand::BTIME: is >> _engineOptions->btime; break;
+		case EGoSubCommand::BTIME: is >> engineOpt.btime; break;
 
 			//white increment per move in mseconds if x > 0
-		case EGoSubCommand::WINC: is >> _engineOptions->winc; break;
+		case EGoSubCommand::WINC: is >> engineOpt.winc; break;
 
 			//black increment per move in mseconds if x > 0
-		case EGoSubCommand::BINC: is >> _engineOptions->binc; break;
+		case EGoSubCommand::BINC: is >> engineOpt.binc; break;
 
 			/*	there are x moves to the next time control,
 				this will only be sent if x > 0,
 				if you don't get this and get the wtime and btime it's sudden death*/
-		case EGoSubCommand::MOVESTOGO: is >> _engineOptions->movestogo; break;
+		case EGoSubCommand::MOVESTOGO: is >> engineOpt.movestogo; break;
 			//search x plies only.
-		case EGoSubCommand::DEPTH: 	is >> _engineOptions->depth;	break;
+		case EGoSubCommand::DEPTH: 	is >> engineOpt.depth;	break;
 			//search x nodes only,
-		case EGoSubCommand::NODES: is >> _engineOptions->nodes; break;
+		case EGoSubCommand::NODES: is >> engineOpt.nodes; break;
 			//search for a mate in x moves
-		case EGoSubCommand::MATE: is >> _engineOptions->mate; break;
+		case EGoSubCommand::MATE: is >> engineOpt.mate; break;
 			//search exactly x mseconds
-		case EGoSubCommand::MOVETIME: is >> _engineOptions->movetime; break;
+		case EGoSubCommand::MOVETIME: is >> engineOpt.movetime; break;
 
 			//search until the "stop" command. Do not exit the search without being told so in this mode!
-		case EGoSubCommand::INFINITE:  _engineOptions->infinite = true; break;
+		case EGoSubCommand::INFINITE:  engineOpt.infinite = true; break;
 
 		default:
 			//this a "dry" Go command
@@ -208,8 +211,12 @@ void Uci::go(std::istringstream& is)
 		}
 
 	}
+	
+	_engine->setOptions(engineOpt);
 	_engine->start();
 
 	//launch search then send out best move to gui
-	std::cout << "bestmove " << "?" << std::endl;
+	std::cout << "\nbestmove " << _engine->bestMove().toString() << std::endl;
+}
+
 }
