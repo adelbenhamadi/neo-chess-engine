@@ -222,5 +222,13 @@ void Uci::go(std::istringstream& is)
 	std::cout << "\nbestmove " << _engine->bestMove().toString() << std::endl;
 }
 
+void Uci::test_engine(std::string fen, engine::EngineOption opt) {
+	newGame();
+	_engine->newBoard(fen);
+	
+	//_engine->reset();
 	_engine->setOptions(opt);
+	_engine->start();
+	std::cout << "bestmove " << _engine->bestMove().toString() << std::endl;
+
 }
