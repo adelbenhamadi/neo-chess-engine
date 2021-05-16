@@ -38,13 +38,13 @@ public:
 	inline Move(unsigned move) noexcept : _move(move),score(0) {}
 
 	//constructor 
-	inline Move(Square from, Square to, EMoveType mtype, EPieceType piece, EPieceType promoted = EPieceType::EMPTY)
+	inline Move(Square from, Square to, EMoveType mtype, EPiece captured, EPieceType promoted = EPieceType::EMPTY) noexcept
 	{
-		_move = (from & 0b111111)
-			| ((to & 0b111111) << 6)
-			| ((piece & 0b1111) << 12)
-			| ((promoted & 0b1111) << 16)
-			| ((mtype & 0b111) << 20);
+		_move = ((int) from )
+			| ((int)to  << 6)
+			| (captured  << 12)
+			| (promoted  << 16)
+			+ mtype ;
 
 	}
 	inline unsigned get() const { return _move; }
