@@ -114,7 +114,7 @@ struct CastlingRight {
 			_black = right;
 		}
 	}
-	inline unsigned get(Side side) {
+	inline unsigned get(Side side)const {
 		return  side == WHITE? _white : _black;
 	}
 private:
