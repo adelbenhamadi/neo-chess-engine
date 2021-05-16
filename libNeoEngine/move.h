@@ -34,8 +34,8 @@ public:
 
 
 	//Default constructor for null move
-	inline Move() : _move(0) {}
-	inline Move(int move) : _move(move) {}
+	inline Move() noexcept : _move(0),score(0) {}
+	inline Move(unsigned move) noexcept : _move(move),score(0) {}
 
 	//constructor 
 	inline Move(Square from, Square to, EMoveType mtype, EPieceType piece, EPieceType promoted = EPieceType::EMPTY)
