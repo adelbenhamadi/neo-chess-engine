@@ -33,7 +33,7 @@ enum EBitboardType : unsigned int
 	B_ROOKS = 9,
 	B_QUEENS = 10,
 	B_KINGS = 11,
-
+	
 	ALL_PAWNS = 12,
 	ALL_KNIGHTS = 13,
 	ALL_BISHOPS = 14,
@@ -54,10 +54,10 @@ enum EBitboardType : unsigned int
 
 struct CastlingRight {
 
-	enum ECastlingRight : unsigned int { 		
+	enum ECastlingRight : unsigned int {
 		NO_CASTLE = 0b00,
 		KING_SIDE = 0b01,
-		QUEEN_SIDE = 0b10, 
+		QUEEN_SIDE = 0b10,
 		BOTH_SIDES =KING_SIDE | QUEEN_SIDE,
 		CASTLING_NB = 4
 	};
@@ -145,7 +145,6 @@ enum Square : short unsigned int {
 	SQUARE_NB = 64
 };
 
-#define IF_VALID_SQUARE(_ind) if(_ind>=SQ_A1 && _ind<=SQ_H8)
 
 enum File : short unsigned int {
 	FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NB
@@ -252,7 +251,7 @@ namespace square {
 	constexpr int pawn_push_dir(Side side) {
 		return side == WHITE ? 8 : -8;
 	}
-
+	
 
 	inline const std::string square_str(Square sq) {
 		return std::string{ char('a' + square::file_of(sq)), char('1' + square::rank_of(sq)) };
