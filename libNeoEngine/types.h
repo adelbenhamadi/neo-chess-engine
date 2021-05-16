@@ -66,19 +66,19 @@ struct CastlingRight {
 			{
 				if (segment[i] == 'K')
 				{
-					_white = CastlingRight::KING_SIDE;
+					_white |= CastlingRight::KING_SIDE;
 				}
 				else if (segment[i] == 'Q')
 				{
-					_white = CastlingRight::QUEEN_SIDE;
+					_white |= CastlingRight::QUEEN_SIDE;
 				}
 				else if (segment[i] == 'k')
 				{
-					_black = CastlingRight::KING_SIDE ;
+					_black |= CastlingRight::KING_SIDE ;
 				}
 				else if (segment[i] == 'q')
 				{
-					_black = CastlingRight::QUEEN_SIDE ;
+					_black |= CastlingRight::QUEEN_SIDE ;
 				}
 			}
 
