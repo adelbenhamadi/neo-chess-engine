@@ -17,12 +17,12 @@
 
 */
 enum EMoveType : unsigned {
-
-	DOUBLE_PAWN_PUSH = 1,
-	CASTLING = 2,
-	//PROMOTION = 3,
-	CAPTURE = 4,
-	EP_CAPTURE = 5
+	QUIET = 0,
+	DOUBLE_PAWN_PUSH = 1 << 20,
+	CASTLING = 2 << 20,
+	PROMOTION = 3 << 20,
+	CAPTURE = 4 << 20,
+	EP_CAPTURE = 5 << 20
 
 };
 
