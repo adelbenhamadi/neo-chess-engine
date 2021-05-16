@@ -117,6 +117,9 @@ struct CastlingRight {
 	inline unsigned get(Side side)const {
 		return  side == WHITE? _white : _black;
 	}
+	bool operator==(CastlingRight& rhs) {
+		return get(WHITE) == rhs.get(WHITE) && get(BLACK) == rhs.get(BLACK);
+	}
 private:
 	unsigned _white;
 	unsigned _black;
