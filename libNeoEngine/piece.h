@@ -7,6 +7,7 @@
 
 
 namespace piece {
+    extern const  std::map<EPieceType, unsigned> piecesValues;
     extern const  std::map<char, EPiece> piecesCodesMap;
    
     const EPiece charToCode(char pc);
