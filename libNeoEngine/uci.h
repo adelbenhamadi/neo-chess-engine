@@ -133,8 +133,8 @@ class Uci
 {
 public:
 
-	Uci() : _board(std::shared_ptr<Board>(new Board())),
-		_engine(std::shared_ptr<engine::Engine>(new engine::Engine(_board))),
+	Uci() :
+		_engine(std::shared_ptr<engine::Engine>(new engine::Engine())),
 		_optionsMap(),
 		_uciCommands(),
 		_goSubCommands()
