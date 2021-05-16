@@ -128,24 +128,38 @@ namespace engine {
 		void start();
 		void stop();
 		void reset();
-		void setOptions(std::shared_ptr<EngineOption> engOpt) {
+		void newBoard(std::string fen);
+		Board& board() { 
+			return _board; 
+		}
+		inline void setOptions(EngineOption engOpt) {
 			_options = engOpt;
-			if (_options->depth > engine::MAX_DEPTH) _options->depth = engine::MAX_DEPTH;
-			if (_options->isSetMoveTime()) {
-				setMaxThinkTime(_options->movetime);
+			if (_options.depth > engine::MAX_DEPTH) _options.depth = engine::MAX_DEPTH;
+			if (_options.isSetMoveTime()) {
+				_searchStats.setThinkTime(_options.movetime);
 			}
-			else if (_options->isSetInfinite()) {
-				setMaxThinkTime(0x7FFFFFFF);
+			else if (_options.isSetInfinite()) {
+				_searchStats.setThinkTime(0x7FFFFFFF);
 			}
-			else if (_options->isSetSearchmoves()) {
+			else if (_options.isSetSearchmoves()) {
 				
 			}
-			if (_options->isForcedTime() == false) {
+			if (_options.isForcedTime() == false) {
 
 			}
 		}
-		void doMove(Move& m){}
-		void printBoard(){}
+		EngineOption options() {
+			return _options;}
+		
+		inline void printBoard(){
+			std::cout << _board << std::endl;
+		}
+		bool executeMove(Move move);
+		bool executeMove(std::string str);
+
+		Move bestMove() const{ return _best; }
+		
+		
 	private:
 		void setMaxThinkTime(unsigned int t) {
 			_threadPool.setThinkTime(t);

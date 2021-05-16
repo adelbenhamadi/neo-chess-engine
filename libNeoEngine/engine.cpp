@@ -312,4 +312,42 @@ namespace engine {
 		return score;
 	}
 
+	void Engine::newBoard(std::string fen)
+	{
+			_board =fen.size()? Board(fen) : Board();
+		
+	}
+
+	inline int Engine::evaluate()
+	{
+		return PESTO::evaluate(_board);
+		//return Evaluator::evaluate(*_board);
+	}
+	
+	bool Engine::executeMove(Move move) {
+		
+		if (!_board.doMove(move, _states->back())) {
+			std::cout << " debug cannot execute move: " << move.toString() << std::endl;
+			return false;
+		}
+		return true;
+	}
+	
+	bool Engine::executeMove(std::string str)
+	{		
+		MoveList moves;
+		MoveGenerator::generateLegalMoves(_board, &moves);
+		for (auto move : moves)
+		{
+			if (str == move.toString() && !move.isNull()) {
+				return executeMove(move);
+			}
+
+		}
+		
+		return false;
+
+	}
+#endif
+
 }
